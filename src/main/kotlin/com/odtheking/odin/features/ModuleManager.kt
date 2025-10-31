@@ -38,6 +38,9 @@ object ModuleManager {
         PositionalMessages, TerracottaTimer, DungeonRequeue, BreakerDisplay, LividSolver, InvincibilityTimer, SpiritBear,
         DungeonWaypoints, ExtraStats,
 
+        // dungeon qol
+        CloseChest,
+
         // floor 7
         TerminalSimulator, TerminalSolver, TerminalTimes, TerminalSounds, TickTimers, ArrowAlign, InactiveWaypoints,
         MelodyMessage, WitherDragons, SimonSays,
