@@ -39,7 +39,7 @@ object ModuleManager {
         DungeonWaypoints, ExtraStats,
 
         // dungeon qol
-        CloseChest,
+        CloseChest, AutoGFS,
 
         // floor 7
         TerminalSimulator, TerminalSolver, TerminalTimes, TerminalSounds, TickTimers, ArrowAlign, InactiveWaypoints,
