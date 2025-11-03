@@ -3,3 +3,6 @@
 
 build/
 run/
+
+flake.lock
+flake.nix
