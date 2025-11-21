@@ -124,6 +124,21 @@ object ChatCommands : Module(
 
         when (words[0]) {
             "help", "h" -> channelMessage("Commands: ${commandsMap.filterValues { it }.keys.joinToString(", ")}", name, channel)
+            // START: CUSTOM
+            "new", "roles" -> channelMessage("New META roles by Ascent. do !bers or any class. https://www.youtube.com/watch?v=G6xrUQpdTw0", name, channel)
+            //roles
+            "arch", "archer" -> channelMessage("A: bl ee2 i2 / 4 rl LEAP H / i3 4 bl LEAP T / 2 Recore", name, channel)
+            "bers", "berserker" -> channelMessage("B: i4 LEAP M / LEAP A 5 3 LEAP H / 1 PRELEAP M / 3", name, channel)
+            "heal", "healer" -> channelMessage("H: 43 / ll HIGH ee3 / 3 bl LEAP M / bl LEAP M", name, channel)
+            "tank" -> channelMessage("T: ss LEAP M / 1 LEAP B (3 rl) LEAP H / 2 PRELEAP M / 1 Recore", name, channel)
+            "mage" -> channelMessage("M: 21 LEAP A / 2 / core / 4 Recore", name, channel)
+            // pf
+            "pfarch", "archpf", "archerpf" -> channelMessage("A: bl ee2 i2 / 4 3 LEAP H / 4 bl LEAP M / 2 Recore", name, channel)
+            "pfbers", "berspf", "berserkerpf" -> channelMessage("B: i4 LEAP M / LEAP A 5 3 LEAP H / 3 dev LEAP M / 3 Recore", name, channel)
+            "pfhealer", "healerpf", "healpf" -> channelMessage("H: 43 LEAP A / bl ee3 / 1 bl LEAP M / bl LEAP M", name, channel)
+            "pftank", "tankpf" -> channelMessage("T: ss LEAP M / 1 LEAP B 3 LEAP H / 2 dev LEAP M / 1 Recore", name, channel)
+            "pfmage", "magepf" -> channelMessage("M: 21 LEAP A / 2 / core / 4 Recore", name, channel)
+            // END: CUSTOM
             "odin", "od" -> if (odin) channelMessage("Odin! https://discord.gg/2nCbC9hkxT", name, channel)
             "coords", "co" -> if (coords) channelMessage(getPositionString(), name, channel)
 
