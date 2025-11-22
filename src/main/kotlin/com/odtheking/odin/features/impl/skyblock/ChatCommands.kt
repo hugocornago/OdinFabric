@@ -53,6 +53,7 @@ object ChatCommands : Module(
     private val partyPromote by BooleanSetting("Promote", false, desc = "Executes the /party promote command.").withDependency { showSettings }
     private val location by BooleanSetting("Location", true, desc = "Sends your current location.").withDependency { showSettings }
     private val holding by BooleanSetting("Holding", true, desc = "Sends the item you are holding.").withDependency { showSettings }
+    private val ascentRoles by BooleanSetting("Ascent Roles", default = true, desc = "Sends information about ascent roles.").withDependency { showSettings }
 
     // https://regex101.com/r/joY7dm/1
     private val messageRegex = Regex("^(?:Party > (\\[[^]]*?])? ?(\\w{1,16})(?: [ቾ⚒])?: ?(.+)\$|Guild > (\\[[^]]*?])? ?(\\w{1,16})(?: \\[([^]]*?)])?: ?(.+)\$|From (\\[[^]]*?])? ?(\\w{1,16}): ?(.+)\$)")
@@ -114,10 +115,10 @@ object ChatCommands : Module(
             ChatChannel.PARTY -> mapOf(
                 "coords" to coords, "odin" to odin, "boop" to boop, "kick" to kick, "cf" to coinFlip, "8ball" to eightBall, "dice" to dice, "racism" to racism, "tps" to tps, "warp" to partyWarp,
                 "allinvite" to partyAllInvite, "pt" to partyTransfer, "m?" to queInstance, "f?" to queInstance, "t?" to queInstance, "time" to time,
-                "demote" to partyDemote, "promote" to partyPromote
+                "demote" to partyDemote, "promote" to partyPromote, "roles" to ascentRoles
             )
-            ChatChannel.GUILD -> mapOf("coords" to coords, "odin" to odin, "boop" to boop, "cf" to coinFlip, "8ball" to eightBall, "dice" to dice, "racism" to racism, "ping" to ping, "tps" to tps, "time" to time)
-            ChatChannel.PRIVATE -> mapOf("coords" to coords, "odin" to odin, "boop" to boop, "cf" to coinFlip, "8ball" to eightBall, "dice" to dice, "racism" to racism, "ping" to ping, "tps" to tps, "invite" to invite, "time" to time)
+            ChatChannel.GUILD -> mapOf("coords" to coords, "odin" to odin, "boop" to boop, "cf" to coinFlip, "8ball" to eightBall, "dice" to dice, "racism" to racism, "ping" to ping, "tps" to tps, "time" to time, "roles" to ascentRoles)
+            ChatChannel.PRIVATE -> mapOf("coords" to coords, "odin" to odin, "boop" to boop, "cf" to coinFlip, "8ball" to eightBall, "dice" to dice, "racism" to racism, "ping" to ping, "tps" to tps, "invite" to invite, "time" to time, "roles" to ascentRoles)
         }
 
         val words = message.drop(1).split(" ").map { it.lowercase() }
@@ -125,19 +126,19 @@ object ChatCommands : Module(
         when (words[0]) {
             "help", "h" -> channelMessage("Commands: ${commandsMap.filterValues { it }.keys.joinToString(", ")}", name, channel)
             // START: CUSTOM
-            "new", "roles" -> channelMessage("New META roles by Ascent. do !bers or any class. https://www.youtube.com/watch?v=G6xrUQpdTw0", name, channel)
+            "new", "roles" -> if (ascentRoles) channelMessage("New META roles by Ascent. do !bers, !pfbers or any class. https://www.youtube.com/watch?v=G6xrUQpdTw0", name, channel)
             //roles
-            "arch", "archer" -> channelMessage("A: bl ee2 i2 / 4 rl LEAP H / i3 4 bl LEAP T / 2 Recore", name, channel)
-            "bers", "berserker" -> channelMessage("B: i4 LEAP M / LEAP A 5 3 LEAP H / 1 PRELEAP M / 3", name, channel)
-            "heal", "healer" -> channelMessage("H: 43 / ll HIGH ee3 / 3 bl LEAP M / bl LEAP M", name, channel)
-            "tank" -> channelMessage("T: ss LEAP M / 1 LEAP B (3 rl) LEAP H / 2 PRELEAP M / 1 Recore", name, channel)
-            "mage" -> channelMessage("M: 21 LEAP A / 2 / core / 4 Recore", name, channel)
+            "arch", "archer" -> if (ascentRoles) channelMessage("A: bl ee2 i2 / 4 rl LEAP H / i3 4 bl LEAP T / 2 Recore", name, channel)
+            "bers", "berserker" -> if (ascentRoles) channelMessage("B: i4 LEAP M / LEAP A 5 3 LEAP H / 1 PRELEAP M / 3", name, channel)
+            "heal", "healer" -> if (ascentRoles) channelMessage("H: 43 / ll HIGH ee3 / 3 bl LEAP M / bl LEAP M", name, channel)
+            "tank" -> if (ascentRoles) channelMessage("T: ss LEAP M / 1 LEAP B (3 rl) LEAP H / 2 PRELEAP M / 1 Recore", name, channel)
+            "mage" -> if (ascentRoles) channelMessage("M: 21 LEAP A / 2 / core / 4 Recore", name, channel)
             // pf
-            "pfarch", "archpf", "archerpf" -> channelMessage("A: bl ee2 i2 / 4 3 LEAP H / 4 bl LEAP M / 2 Recore", name, channel)
-            "pfbers", "berspf", "berserkerpf" -> channelMessage("B: i4 LEAP M / LEAP A 5 3 LEAP H / 3 dev LEAP M / 3 Recore", name, channel)
-            "pfhealer", "healerpf", "healpf" -> channelMessage("H: 43 LEAP A / bl ee3 / 1 bl LEAP M / bl LEAP M", name, channel)
-            "pftank", "tankpf" -> channelMessage("T: ss LEAP M / 1 LEAP B 3 LEAP H / 2 dev LEAP M / 1 Recore", name, channel)
-            "pfmage", "magepf" -> channelMessage("M: 21 LEAP A / 2 / core / 4 Recore", name, channel)
+            "pfarch", "archpf", "archerpf" -> if (ascentRoles) channelMessage("A: bl ee2 i2 / 4 3 LEAP H / 4 bl LEAP M / 2 Recore", name, channel)
+            "pfbers", "berspf", "berserkerpf" -> if (ascentRoles) channelMessage("B: i4 LEAP M / LEAP A 5 3 LEAP H / 3 dev LEAP M / 3 Recore", name, channel)
+            "pfhealer", "healerpf", "healpf" -> if (ascentRoles) channelMessage("H: 43 LEAP A / bl ee3 / 1 bl LEAP M / bl LEAP M", name, channel)
+            "pftank", "tankpf" -> if (ascentRoles) channelMessage("T: ss LEAP M / 1 LEAP B 3 LEAP H / 2 dev LEAP M / 1 Recore", name, channel)
+            "pfmage", "magepf" -> if (ascentRoles) channelMessage("M: 21 LEAP A / 2 / core / 4 Recore", name, channel)
             // END: CUSTOM
             "odin", "od" -> if (odin) channelMessage("Odin! https://discord.gg/2nCbC9hkxT", name, channel)
             "coords", "co" -> if (coords) channelMessage(getPositionString(), name, channel)
