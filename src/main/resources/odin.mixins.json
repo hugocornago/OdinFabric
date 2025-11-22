@@ -13,6 +13,7 @@
     "mixins.AbstractContainerScreenMixin",
     "mixins.BossBarHealthOverlayMixin",
     "mixins.BowItemMixin",
+    "mixins.ButtonBlockMixin",
     "mixins.ChatListenerMixin",
     "mixins.ChatScreenMixin",
     "mixins.ClientPacketListenerMixin",
@@ -22,6 +23,7 @@
     "mixins.KeyBindingMixin",
     "mixins.MouseHandlerMixin",
     "mixins.PlayerRendererMixin",
+    "mixins.LeverBlockMixin",
     "mixins.ScreenEffectRendererMixin"
   ],
   "mixins": [
