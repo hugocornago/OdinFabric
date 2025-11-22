@@ -12,6 +12,7 @@
     "accessors.PictureInPictureRendererAccessor",
     "mixins.AbstractContainerScreenMixin",
     "mixins.BossBarHealthOverlayMixin",
+    "mixins.BowItemMixin",
     "mixins.ChatListenerMixin",
     "mixins.ChatScreenMixin",
     "mixins.ClientPacketListenerMixin",
