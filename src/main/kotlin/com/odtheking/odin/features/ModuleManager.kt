@@ -51,7 +51,7 @@ object ModuleManager {
 
         //skyblock
         ChatCommands, NoCursorReset, Ragnarock, SpringBoots, WardrobeKeybinds, PetKeybinds, AutoSprint,
-        CommandKeybinds, SlotBinds, Splits, ArrowFix,
+        CommandKeybinds, SlotBinds, Splits,
 
         // nether
         SupplyHelper, BuildHelper, RemovePerks, NoPre, PearlWaypoints, FreshTools, KuudraInfo, Misc

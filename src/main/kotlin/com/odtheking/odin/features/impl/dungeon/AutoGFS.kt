@@ -37,8 +37,8 @@ object AutoGFS : Module(
     }
 
     private fun refill() {
-        if (mc.currentScreen != null || !DungeonUtils.inDungeons) return
-        val inventory = mc.player?.inventory?.mainStacks ?: return
+        if (mc.screen != null || !DungeonUtils.inDungeons) return
+        val inventory = mc.player?.inventory ?: return
 
         inventory.find { it?.customData?.itemId == "ENDER_PEARL" }?.takeIf { refillPearl }?.also { fillItemFromSack(16, "ENDER_PEARL", "ender_pearl", false) }
 
