@@ -12,12 +12,12 @@ object CloseChest : Module(
     name = "Close Chest",
     description = "Allows you to instantly close chests with any key or automatically."
 ) {
-    private val chestKey = "container.chest";
-    private val doubleChestKey = "container.chestDouble";
+    private const val CHESTKEY = "container.chest";
+    private const val DOUBLECHESTKEY = "container.chestDouble";
 
     fun shouldCloseScreen(screen: ContainerScreen): Boolean? {
         val key = (screen.title.contents as? TranslatableContents)?.key ?: return false
-        return key.equalsOneOf(chestKey, doubleChestKey)
+        return key.equalsOneOf(CHESTKEY, DOUBLECHESTKEY)
     }
 
     init {
@@ -29,15 +29,14 @@ object CloseChest : Module(
                 this.screen.onClose()
             }
         }
-    }
 
-//    @EventHandler
-//    fun onClickGUI(event: GuiEvent.MouseClick) {
-//        if (!DungeonUtils.inDungeons) return
-//        val gui = (event.screen as? GenericContainerScreen)
-//        if (shouldCloseGUI(gui) == true) {
-//            event.cancel()
-//            event.screen.close()
-//        }
-//    }
+        on<GuiEvent.MouseClick> {
+            if (!DungeonUtils.inDungeons) return@on
+            val screen = this.screen as? ContainerScreen ?: return@on
+            if (shouldCloseScreen(screen) == true) {
+                this.cancel()
+                this.screen.onClose()
+            }
+        }
+    }
 }
