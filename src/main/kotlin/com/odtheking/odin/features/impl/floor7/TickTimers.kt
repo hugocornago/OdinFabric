@@ -58,16 +58,16 @@ object TickTimers : Module(
     private var padTickTime: Int = -1
 
     private val outboundsHud by HUD("Outbounds Hud", "Displays a timer for out of bounds death ticks.") {
-        if (it)                      textDim(formatTimer(15, 20, "§8Outbounds:"), 1, 1, Colors.MINECRAFT_DARK_RED)
-        else if (outboundsTime >= 0) textDim(formatTimer(outboundsTime, 20, "§8Outbounds:"), 1, 1, Colors.MINECRAFT_DARK_RED)
+        if (it)                      textDim(formatTimer(15, 20, "§8Outbounds:"), 0, 0, Colors.MINECRAFT_DARK_RED)
+        else if (outboundsTime >= 0) textDim(formatTimer(outboundsTime, 20, "§8Outbounds:"), 0, 0, Colors.MINECRAFT_DARK_RED)
         else 0 to 0
     }
 
     private var outboundsTime: Int = -1
 
     private val secretsHud by HUD("Secrets Hud", "Displays a timer for secret spawn ticks.") {
-        if (it)                    textDim(formatTimer(15, 20, "§7Secret:"), 1, 1, Colors.MINECRAFT_DARK_RED)
-        else if (secretsTime >= 0) textDim(formatTimer(secretsTime, 20, "§7Secret:"), 1, 1, Colors.MINECRAFT_DARK_RED)
+        if (it)                    textDim(formatTimer(15, 20, "§7Secret:"), 0, 0, Colors.MINECRAFT_DARK_RED)
+        else if (secretsTime >= 0) textDim(formatTimer(secretsTime, 20, "§7Secret:"), 0, 0, Colors.MINECRAFT_DARK_RED)
         else 0 to 0
     }
 
@@ -92,16 +92,17 @@ object TickTimers : Module(
 
         TickTask(0, true) {
             if (!DungeonUtils.inDungeons) return@TickTask
+            if (outboundsTime == 0 && outboundsHud.enabled) outboundsTime = 40
+            if (outboundsTime >= 0 && outboundsHud.enabled) outboundsTime--
+            if (secretsTime == 0 && secretsHud.enabled && !DungeonUtils.inBoss) secretsTime = 20
+            if (secretsTime >= 0 && secretsHud.enabled) secretsTime--
+            if (!DungeonUtils.inBoss) return@TickTask
             if (goldorTickTime == 0 && goldorStartTime <= 0 && goldorHud.enabled) goldorTickTime = 60
             if (goldorStartTime >= 0 && goldorHud.enabled) goldorStartTime--
             if (goldorTickTime >= 0 && goldorHud.enabled) goldorTickTime--
             if (padTickTime == 0 && stormHud.enabled) padTickTime = 20
             if (padTickTime >= 0 && stormHud.enabled) padTickTime--
             if (necronTime >= 0 && necronHud.enabled) necronTime--
-            if (outboundsTime == 0 && outboundsHud.enabled) outboundsTime = 40
-            if (outboundsTime >= 0 && outboundsHud.enabled) outboundsTime--
-            if (secretsTime == 0 && secretsHud.enabled && !DungeonUtils.inBoss) secretsTime = 20
-            if (secretsTime >= 0 && secretsHud.enabled) secretsTime--
         }
 
         onReceive<ClientboundSetTimePacket> {
@@ -109,9 +110,9 @@ object TickTimers : Module(
             val dungeonNotStarted = DungeonUtils.openRoomCount == 0
             val gameTime = mc.level?.gameTime ?: -1
             if (dungeonNotStarted) {
-                if (outboundsHud.enabled)  outboundsTime = 40 -(gameTime % 40).toInt()
+                if (outboundsHud.enabled) outboundsTime = 40 - (gameTime % 40).toInt()
             } else {
-                if (secretsHud.enabled)  secretsTime = 20 - (gameTime % 20).toInt()
+                if (secretsHud.enabled) secretsTime = 20 - (gameTime % 20).toInt()
                 outboundsTime = -1
             }
         }
