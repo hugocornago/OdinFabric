@@ -24,6 +24,12 @@ object LocationUtils {
 
     private val lobbyRegex = Regex("\\d\\d/\\d\\d/\\d\\d (\\w{0,6}) *")
 
+    fun forceDungeons() {
+        this.isOnHypixel = true
+        this.isInSkyblock = true
+        this.currentArea = Island.Dungeon
+    }
+
     init {
         on<ServerEvent.Connect> {
             if (mc.isSingleplayer) {

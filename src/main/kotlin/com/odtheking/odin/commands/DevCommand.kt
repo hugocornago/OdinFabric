@@ -31,6 +31,7 @@ import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.network.chat.Component
 import net.minecraft.network.protocol.game.ClientboundSystemChatPacket
 import net.minecraft.world.phys.BlockHitResult
+import javax.xml.stream.Location
 
 val devCommand = Commodore("oddev") {
 
@@ -67,6 +68,10 @@ val devCommand = Commodore("oddev") {
     literal("generatefeaturelist").runs {
         setClipboardContent(generateFeatureList())
         modMessage("Generated feature list and copied to clipboard.")
+    }
+
+    literal("forcedungeons").runs {
+        LocationUtils.forceDungeons()
     }
 
     literal("debug").executable {
