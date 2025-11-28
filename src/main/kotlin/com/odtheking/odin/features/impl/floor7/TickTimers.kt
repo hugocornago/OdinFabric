@@ -73,22 +73,6 @@ object TickTimers : Module(
 
     private var secretsTime = -1
 
-    private val outboundsHud by HUD("Outbounds Hud", "Displays a timer for out of bounds death ticks.") {
-        if (it)                      textDim(formatTimer(15, 20, "§8Outbounds:"), 0, 0, Colors.MINECRAFT_DARK_RED)
-        else if (outboundsTime >= 0) textDim(formatTimer(outboundsTime, 20, "§8Outbounds:"), 0, 0, Colors.MINECRAFT_DARK_RED)
-        else 0 to 0
-    }
-
-    private var outboundsTime: Int = -1
-
-    private val secretsHud by HUD("Secrets Hud", "Displays a timer for secret spawn ticks.") {
-        if (it)                    textDim(formatTimer(15, 20, "§7Secret:"), 0, 0, Colors.MINECRAFT_DARK_RED)
-        else if (secretsTime >= 0) textDim(formatTimer(secretsTime, 20, "§7Secret:"), 0, 0, Colors.MINECRAFT_DARK_RED)
-        else 0 to 0
-    }
-
-    private var secretsTime: Int = -1
-
     init {
         on<ChatPacketEvent> {
             when {
