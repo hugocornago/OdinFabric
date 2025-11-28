@@ -40,10 +40,10 @@ open class TerminalHandler(val type: TerminalTypes) {
     open fun simulateClick(slotIndex: Int, clickType: Int) {}
 
     open fun click(slotIndex: Int, button: Int, simulateClick: Boolean = true) {
-        if (mc.player == null) return
+        val screenHandler = (mc.screen as? ContainerScreen)?.menu ?: return
         if (simulateClick) simulateClick(slotIndex, button)
         isClicked = true
-        val screenHandler = (mc.screen as? ContainerScreen)?.menu ?: return
+
         if (mc.screen is TermSimGUI) {
             PacketEvent.Send(
                 ServerboundContainerClickPacket(

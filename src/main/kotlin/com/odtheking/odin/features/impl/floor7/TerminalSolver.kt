@@ -78,7 +78,7 @@ object TerminalSolver : Module(
                 if (!it.isClicked && mc.screen !is TermSimGUI) leftTerm()
                 it.openScreen()
             }
-            val windowName = title.string
+            val windowName = title.string ?: return@onReceive
             val newTermType = TerminalTypes.entries.find { terminal -> windowName.startsWith(terminal.windowName) }?.takeIf { it != currentTerm?.type } ?: return@onReceive
 
             currentTerm = when (newTermType) {
@@ -92,7 +92,7 @@ object TerminalSolver : Module(
                     StartsWithHandler(startsWithRegex.find(windowName)?.groupValues?.get(1) ?: return@onReceive modMessage("Failed to find letter, please report this!"))
 
                 TerminalTypes.SELECT ->
-                    SelectAllHandler(DyeColor.entries.find { it.name.replace("_", " ").equals(selectAllRegex.find(windowName)?.groupValues?.get(1)?.replace("SILVER", "light_gray"), true) } ?: return@onReceive modMessage("Failed to find color, please report this!"))
+                    SelectAllHandler(DyeColor.entries.find { it.name.replace("_", " ").equals(selectAllRegex.find(windowName)?.groupValues?.get(1)?.replace("SILVER", "LIGHT GRAY"), true) } ?: return@onReceive modMessage("Failed to find color, please report this!"))
 
                 TerminalTypes.MELODY -> MelodyHandler()
             }
@@ -101,6 +101,7 @@ object TerminalSolver : Module(
                 devMessage("§aNew terminal: §6${it.type.name}")
                 TerminalEvent.Opened(it).postAndCatch()
                 lastTermOpened = it
+                it.openScreen()
             }
         }
 
@@ -154,10 +155,7 @@ object TerminalSolver : Module(
             if (
                 (renderType == 1 && !(currentTerm?.type == TerminalTypes.MELODY && cancelMelodySolver)) ||
                 (blockIncorrectClicks && currentTerm?.canClick(slotId, button) == false)
-            ) {
-                cancel()
-                return@on
-            }
+            ) return@on cancel()
 
             if (middleClickGUI) {
                 currentTerm?.click(slotId, if (button == 0) GLFW.GLFW_MOUSE_BUTTON_3 else button, hideClicked && currentTerm?.isClicked == false)
@@ -165,10 +163,8 @@ object TerminalSolver : Module(
                 return@on
             }
 
-            if (hideClicked && currentTerm?.isClicked == false) {
-                currentTerm?.simulateClick(slotId, button)
-                currentTerm?.isClicked = true
-            }
+            if (hideClicked && currentTerm?.isClicked == false) currentTerm?.simulateClick(slotId, button)
+            currentTerm?.isClicked = true
         }
 
         on<GuiEvent.DrawBackground> {

@@ -33,7 +33,7 @@ object OdinMod : ClientModInitializer {
     val mc: Minecraft
         get() = Minecraft.getInstance()
 
-    const val MOD_ID = "odin-fabric"
+    const val MOD_ID = "odin"
 
     private val metadata: ModMetadata by lazy {
         FabricLoader.getInstance().getModContainer(MOD_ID).orElseThrow().metadata
@@ -70,7 +70,7 @@ object OdinMod : ClientModInitializer {
 
         Config.load()
 
-        val name = mc.user?.name ?: return
+        val name = mc.user?.name?.takeIf { !it.matches(Regex("Player\\d{2,3}")) } ?: return
         scope.launch {
             postData("https://api.odtheking.com/tele/", """{"username": "$name", "version": "Fabric $version"}""")
         }

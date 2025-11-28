@@ -6,8 +6,8 @@ plugins {
     `maven-publish`
 }
 
-group = property("maven_group")!!
-version = property("mod_version")!!
+group = property("maven_group") as String
+version = property("mod_version") as String
 
 repositories {
     mavenCentral()
@@ -31,13 +31,13 @@ dependencies {
     }
 
     property("okhttp_version").let {
-        implementation("com.squareup.okhttp3:okhttp:$it")
-        include("com.squareup.okhttp3:okhttp:$it")
+        implementation("com.squareup.okhttp3:okhttp-jvm:$it")
+        include("com.squareup.okhttp3:okhttp-jvm:$it")
     }
 
     property("okio_version").let {
-        implementation("com.squareup.okio:okio:$it")
-        include("com.squareup.okio:okio:$it")
+        implementation("com.squareup.okio:okio-jvm:$it")
+        include("com.squareup.okio:okio-jvm:$it")
     }
 
     modCompileOnly("com.terraformersmc:modmenu:${property("modmenu_version")}")
@@ -100,5 +100,19 @@ tasks {
 }
 
 java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
     withSourcesJar()
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "com.odtheking"
+            artifactId = "Odin"
+            version = version
+            from(components["java"])
+        }
+    }
 }

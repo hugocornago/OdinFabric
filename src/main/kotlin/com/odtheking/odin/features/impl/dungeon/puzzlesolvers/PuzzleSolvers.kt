@@ -19,6 +19,7 @@ import net.minecraft.core.BlockPos
 import net.minecraft.network.protocol.game.ClientboundBlockEventPacket
 import net.minecraft.network.protocol.game.ClientboundPlayerPositionPacket
 import net.minecraft.network.protocol.game.ServerboundUseItemOnPacket
+import net.minecraft.world.InteractionHand
 import net.minecraft.world.level.block.Blocks
 
 object PuzzleSolvers : Module(
@@ -88,7 +89,6 @@ object PuzzleSolvers : Module(
     private val boulderColor by ColorSetting("Boulder Color", Colors.MINECRAFT_GREEN.withAlpha(.5f), true, desc = "The color of the box.").withDependency { boulderDropDown && boulderSolver }
 
     private val puzzleTimers by BooleanSetting("Puzzle Timers", true, desc = "Shows the time it took to solve each puzzle.")
-    private val sendPuzzleTime by BooleanSetting("Send Puzzle Time", false, desc = "Sends the time it took to solve each puzzle in party chat.").withDependency { puzzleTimers }
     private val puzzleTimersMap = hashMapOf<String, PuzzleTimer>()
     private data class PuzzleTimer(val timeEntered: Long = System.currentTimeMillis(), var sentMessage: Boolean = false)
     private val weirdosRegex = Regex("\\[NPC] (.+): (.+).?")
@@ -157,7 +157,7 @@ object PuzzleSolvers : Module(
         }
 
         onSend<ServerboundUseItemOnPacket> {
-            if (!DungeonUtils.inDungeons || DungeonUtils.inBoss) return@onSend
+            if (!DungeonUtils.inDungeons || DungeonUtils.inBoss || this.hand == InteractionHand.OFF_HAND) return@onSend
             if (waterSolver) WaterSolver.waterInteract(this)
             if (boulderSolver) BoulderSolver.playerInteract(this)
        }
